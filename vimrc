@@ -4,7 +4,7 @@
 "         2. taglist插件还需要安装ctags  : pacman -S ctags
 "         3. astyle 和 clang
 "         4. font: Hack    size: small size is good
-"         要换电脑只需要拷贝1家目录下的.vim目录即可,用git把.vim文件夹,zsh的文件夹,code目录,typora目录,建议直接把家目录拷贝了,开箱即用
+"         5. 如果出现问题,可以将plugged目录赋予较高权限
 "============================================================================
 
 " All system-wide defaults are set in $VIMRUNTIME/debian.vim and sourced by
@@ -124,6 +124,8 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-commentary'
 "代码缩进线适合python
 Plug 'yggdroot/indentline'
+
+
 "配色插件
 Plug 'zefei/cake16'
 Plug 'w0ng/vim-hybrid'
@@ -436,7 +438,7 @@ set background=dark "背景为暗色
 
 "colorscheme hybrid
 "colorscheme gruvbox 
-colorscheme space_vim_theme
+"colorscheme space_vim_theme
 
 "solarized配置
 "colorscheme solarized8
@@ -449,10 +451,7 @@ colorscheme space_vim_theme
 "colorscheme seoul256
 
 "yowish
-"colorscheme yowish
-
-"自己下载的文件主题,在color文件里
-"colorscheme codeschool
+colorscheme yowish
 "-----------------o-------------------End-------------------o------------------
 
 
