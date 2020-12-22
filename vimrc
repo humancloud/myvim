@@ -140,7 +140,6 @@ Plug 'junegunn/seoul256.vim'
 "yowish
 Plug 'KabbAmine/yowish.vim'
 
-
 "高亮单词,选中单词,上面设置了leader为逗号
 "leader k高亮单词,
 "n N 到下一个高亮的单词
@@ -441,7 +440,7 @@ set background=dark "背景为暗色
 "colorscheme space_vim_theme
 
 "solarized配置
-"colorscheme solarized8
+colorscheme solarized8
 
 " colorscheme molokai
 " let g:molokai_original = 1
@@ -451,7 +450,8 @@ set background=dark "背景为暗色
 "colorscheme seoul256
 
 "yowish
-colorscheme yowish
+"colorscheme yowish
+
 "-----------------o-------------------End-------------------o------------------
 
 
@@ -505,8 +505,8 @@ noremap <C-j> <C-w>j
 noremap <C-k> <C-w>k
 
 "2. change Buffer  buffer next abd buffer pre "
-nnoremap [b :bn<CR>  
-nnoremap ]b :bp<CR>
+nnoremap ]b :bn<CR>  
+nnoremap [b :bp<CR>
 
 " leader b 快速关闭当前buffer
 noremap <leader>b :bd<cr>
