@@ -140,6 +140,7 @@ Plug 'junegunn/seoul256.vim'
 "yowish
 Plug 'KabbAmine/yowish.vim'
 
+
 "高亮单词,选中单词,上面设置了leader为逗号
 "leader k高亮单词,
 "n N 到下一个高亮的单词
@@ -171,8 +172,10 @@ call plug#end()
 " vim-go need gopls
 let g:go_def_mode = 'gopls'
 
+
 "coc补全
 "这个很好用,但是我想还是觉得原生vim更好,而且每次启动都要启动language server (所以在配置里去掉了C/Cpp的配置,使用:CocConfig可以修改配置)
+"功能很强大，还需要继续挖掘
 "
 "TextEdit might fail if hidden is not set.
 set hidden
@@ -214,7 +217,7 @@ function! s:check_back_space() abort
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-" Use <c-space> to trigger completion.
+" Use <c-space> to trigger completion, ctrl space 触发补全??
 inoremap <silent><expr> <c-space> coc#refresh()
 
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
@@ -231,11 +234,13 @@ nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 " GoTo code navigation.
+" 跳转到定义，类型定义，实现，引用
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
+" K 显示文档
 " Use K to show documentation in preview window.
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
@@ -251,9 +256,10 @@ endfunction
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Symbol renaming.
+" 标志重命名(重构用的)
 nmap <leader>rn <Plug>(coc-rename)
 
-" Formatting selected code.
+" Formatting selected code. leader f 格式化选中的代码
 xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
 
@@ -272,6 +278,7 @@ nmap <leader>a  <Plug>(coc-codeaction-selected)
 
 " Remap keys for applying codeAction to the current buffer.
 nmap <leader>ac  <Plug>(coc-codeaction)
+" 自动修复问题
 " Apply AutoFix to problem on the current line.
 nmap <leader>qf  <Plug>(coc-fix-current)
 
@@ -305,6 +312,7 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 " provide custom statusline: lightline.vim, vim-airline.
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
+"CocList 功能的映射，暂时用不到此功能
 " Mappings using CoCList:
 " Show all diagnostics.
 nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
@@ -327,20 +335,32 @@ nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 "Neoformat C 配置,
 "由于安装了clang,所以它默认会使用clang-format来格式化C代码,但是真的很难用,所以这里指定一下
 let g:neoformat_enabled_c = ['astyle']
-"Cpp 配置
 let g:neoformat_enabled_cpp = ['astyle']
-"python
 let g:neoformat_enabled_python = ['yapf']
-"Java
 let g:neoformat_enabled_java = ['astyle']
 
 
 "airline配置
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#left_sep = ' '
-let g:airline#extensions#tabline#left_alt_sep = '|'
-let g:airline#extensions#tabline#formatter = 'default'
-let g:airline_theme="bubblegum" 
+let g:airline#extensions#tabline#enabled = 1 		  "设置一直显示上方的tabline
+let g:airline_powerline_fonts = 1   		          "这个是安装字体后 必须设置此项" 
+let g:airline#extensions#tabline#buffer_nr_show = 1   "设置显示buffer的编号"
+" 映射<leader>num到num buffer,快速切换buffer
+nnoremap <leader>1 :b 1<CR>
+nnoremap <leader>2 :b 2<CR>
+nnoremap <leader>3 :b 3<CR>
+nnoremap <leader>4 :b 4<CR>
+nnoremap <leader>5 :b 5<CR>
+nnoremap <leader>6 :b 6<CR>
+nnoremap <leader>7 :b 7<CR>
+nnoremap <leader>8 :b 8<CR>
+nnoremap <leader>9 :b 9<CR>
+"映射左右切换buffer
+nnoremap ]b :bn<CR>
+nnoremap [b :bp<CR>
+"映射快速关闭当前buffer
+nnoremap <leader>b :bd<CR>
+"设置主题
+let g:airline_theme="wombat" 
 "主题
 " badwolf 和dark差不多 
 " base16 银，紫 
@@ -375,16 +395,12 @@ let g:airline_theme="bubblegum"
 " wombat 亮黄
 " zenburn 蓝，橙
 
-"这个是安装字体后 必须设置此项" 
-let g:airline_powerline_fonts = 1   
-"打开tabline功能,方便查看Buffer和切换，这个功能比较不错"
-"我还省去了minibufexpl插件，因为我习惯在1个Tab下用多个buffer"
-let g:airline#extensions#tabline#buffer_nr_show = 1
-
 
 "NerdTree
 "ctrl n 映射打开目录树,关闭目录树
-map <C-n> :NERDTreeToggle<CR> 
+nnoremap <C-n> :NERDTreeToggle<CR> 
+"ctrl t 更新目录树，(创建新文件后不会自动更新目录树)
+nnoremap <C-t> :NERDTree<CR>
 
 
 "==============================================================================
@@ -397,7 +413,6 @@ let Tlist_Ctags_Cmd = '/usr/bin/ctags'
 "启动vim后自动打开taglist窗口
 "let Tlist_Auto_Open = 1
 "不同时显示多个文件的tag，只显示当前文件的
-"不同时显示多个文件的tag，仅显示一个
 let Tlist_Show_One_File = 1
 "taglist为最后一个窗口时，退出vim
 let Tlist_Exit_OnlyWindow = 1
@@ -406,10 +421,12 @@ let Tlist_Exit_OnlyWindow = 1
 "let Tlist_WinHeight = 100
 "let Tlist_WinWidth = 40
 "设置taglist打开关闭的快捷键 leader + t
-noremap <leader>t :TlistToggle<CR>
+nnoremap <leader>t :TlistToggle<CR>
 "更新ctags标签文件快捷键设置
-noremap <F6> :!ctags -R<CR>
+nnoremap <F6> :!ctags -R<CR>
 "<-taglist=====================================================================
+
+
 
 "cpp enhanced highlight配置(高亮显示Cpp的类等)
 let g:cpp_class_scope_highlight = 1
@@ -429,18 +446,17 @@ let g:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"'}
 
 "---------------o----------------vim配色与主题---------------o----------------
 
-"256配色，这个一定要放在colorscheme前面
+"设置256配色，这个要放在colorscheme前面
 let g:solarized_termcolors=256
 set termguicolors  "设置真彩色
 set background=dark "背景为暗色
-"set background=light 
 
-"colorscheme hybrid
+colorscheme hybrid
 "colorscheme gruvbox 
 "colorscheme space_vim_theme
 
 "solarized配置
-colorscheme solarized8
+"colorscheme solarized8
 
 " colorscheme molokai
 " let g:molokai_original = 1
@@ -452,6 +468,8 @@ colorscheme solarized8
 "yowish
 "colorscheme yowish
 
+"onedark
+"colorscheme onedark
 "-----------------o-------------------End-------------------o------------------
 
 
@@ -465,27 +483,16 @@ set smartcase		" Do smart case matching
 set incsearch		" Incremental search
 set autowrite		" Automatically save before commands like :next and :make
 set mouse=a		    " Enable mouse usage (all modes)
-"右下角显示光标位置
-set ruler
-"突出显示当前行
-set cursorline
-"设置智能自动缩进
-set smartindent
-"行号
-set nu
-"高亮搜索
-set hlsearch
-"设置折叠方式
-"set foldmethod=indent
-"设置tab键大小
-set tabstop=4
-"设置缩进长度
-set shiftwidth=4
-"搜索忽略大小写
-set ignorecase
+set ruler			" 右下角显示光标的坐标
+set cursorline		" 突出显示当前行
+set smartindent		" 设置智能自动缩进
+set nu 				" 行号
+set hlsearch        " 高亮搜索
+set ignorecase		" 搜索忽略大小写
+set tabstop=4		" 设置tab键大小
+set shiftwidth=4	" 设置缩进长度
 
-
-"vim打开后光标停在上次退出时光标的位置
+"vim 打开后光标停在上次退出时光标的位置
 if has("autocmd")
 	au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
@@ -495,21 +502,38 @@ endif
 
 
 "---------------o----------------vim中的一些映射---------------o---------------
+"
+"noremap是不会递归的映射 (大概是no recursion)
+"例如
+"noremap Y y
+"noremap y Y
+"不会出现问题,按Y代表y,按y代表Y
+"而
+"map Y y
+"map y k
+"按Y时就是k
+"
+"
+"前缀代表生效范围
+"inoremap就只在插入(insert)模式下生效
+"vnoremap只在visual模式下生效
+"nnoremap就在normal模式下生效
+"
+"
+"好几个插件的自带配置的映射，我修改成了合适的，比较喜欢nnoremap
+
+
+
+
 
 "Nomal Mode
 
 "1. switch window
-noremap <C-h> <C-w>h
-noremap <C-l> <C-w>l
-noremap <C-j> <C-w>j
-noremap <C-k> <C-w>k
+nnoremap <C-h> <C-w>h
+nnoremap <C-l> <C-w>l
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
 
-"2. change Buffer  buffer next abd buffer pre "
-nnoremap ]b :bn<CR>  
-nnoremap [b :bp<CR>
-
-" leader b 快速关闭当前buffer
-noremap <leader>b :bd<cr>
 
 
 
@@ -517,7 +541,7 @@ noremap <leader>b :bd<cr>
 " Insert Mode
 
 "插入模式下leader w 保存文件
-imap ,w <esc>:w<CR>
+inoremap ,w <esc>:w<CR>
 
 "插入模式下任意位置直接切到新的一行
 inoremap <C-j> <C-o>o
@@ -525,4 +549,7 @@ inoremap <C-j> <C-o>o
 "插入模式跳转到行尾
 inoremap <C-l> <C-o>A  
 
-"-----------------o-------------------End-------------------o------------------
+
+"还有插件里的一些映射
+"例如NerdTree的映射,air-line的切换buffer映射，非常方便
+""-----------------o-------------------End-------------------o------------------
