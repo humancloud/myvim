@@ -84,17 +84,16 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 
-"code format
-"输入Neoformat即可进行格式化,(可以使用tab补全)
-"不需什么配置,
-"格式化C: sudo apt-get install astyle ,格式化其他应该也需要其他的相应软件包
+"neoformat
+"输入Neoformat即可格式化
 Plug 'sbdchd/neoformat'
 
 "cpp什么高亮插件,也不知道咋样,从vimawsome找的,喜欢的人很多
 Plug 'octol/vim-cpp-enhanced-highlight'
 
-"右侧taglist
-Plug 'vim-scripts/taglist.vim'
+"TagBar 显示大纲
+Plug 'preservim/tagbar'
+
 "airline
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -125,6 +124,12 @@ Plug 'tpope/vim-commentary'
 "代码缩进线适合python
 Plug 'yggdroot/indentline'
 
+" 显示修改,gitgutter
+Plug 'airblade/vim-gitgutter'
+
+" 模糊搜索文件
+Plug 'kien/ctrlp.vim'
+
 
 "配色插件
 Plug 'zefei/cake16'
@@ -140,21 +145,15 @@ Plug 'junegunn/seoul256.vim'
 "yowish
 Plug 'KabbAmine/yowish.vim'
 
-
-"高亮单词,选中单词,上面设置了leader为逗号
 "leader k高亮单词,
+"leader K取消高亮,
 "n N 到下一个高亮的单词
-"leader K 取消高亮
 Plug 'lfv89/vim-interestingwords'
-
-"语法检查,支持很多语言,不用了不再依赖这个东西
-"Plug 'scrooloose/syntastic'
 
 "vim Markdown
 Plug 'iamcco/markdown-preview.vim'
 "添加数学公式支持
 Plug 'iamcco/mathjax-support-for-mkdp'
-
 
 "bufferonly
 "输入:BufOnly 即可清除其他buffer
@@ -334,10 +333,10 @@ nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
 "Neoformat C 配置,
 "由于安装了clang,所以它默认会使用clang-format来格式化C代码,但是真的很难用,所以这里指定一下
+"格式化C: pacman install astyle ,格式化其他应该也需要其他的相应软件包
 let g:neoformat_enabled_c = ['astyle']
 let g:neoformat_enabled_cpp = ['astyle']
 let g:neoformat_enabled_python = ['yapf']
-let g:neoformat_enabled_java = ['astyle']
 
 
 "airline配置
@@ -397,35 +396,16 @@ let g:airline_theme="wombat"
 
 
 "NerdTree
-"ctrl n 映射打开目录树,关闭目录树
-nnoremap <C-n> :NERDTreeToggle<CR> 
-"ctrl t 更新目录树，(创建新文件后不会自动更新目录树)
-nnoremap <C-t> :NERDTree<CR>
+" 映射打开目录树,关闭目录树
+nnoremap <leader>n :NERDTreeToggle<CR> 
+" 更新目录树，(创建新文件后不会自动更新目录树)
+nnoremap <leader>r :NERDTree<CR>
+"定位当前打开的文件在目录树中的位置
+nnoremap <leader>v :NERDTreeFind<CR>
 
 
-"==============================================================================
-"           taglist浏览插件配置
-"==============================================================================
-"taglist窗口显示在右侧，缺省为左侧
-let Tlist_Use_Right_Window=1
-"设置ctags路径"将taglist与ctags关联
-let Tlist_Ctags_Cmd = '/usr/bin/ctags'
-"启动vim后自动打开taglist窗口
-"let Tlist_Auto_Open = 1
-"不同时显示多个文件的tag，只显示当前文件的
-let Tlist_Show_One_File = 1
-"taglist为最后一个窗口时，退出vim
-let Tlist_Exit_OnlyWindow = 1
-"let Tlist_Use_Right_Window =1
-"设置taglist窗口大小
-"let Tlist_WinHeight = 100
-"let Tlist_WinWidth = 40
-"设置taglist打开关闭的快捷键 leader + t
-nnoremap <leader>t :TlistToggle<CR>
-"更新ctags标签文件快捷键设置
-nnoremap <F6> :!ctags -R<CR>
-"<-taglist=====================================================================
-
+"TagBar configuration
+nnoremap <leader>t :TagbarToggle<CR>
 
 
 "cpp enhanced highlight配置(高亮显示Cpp的类等)
@@ -441,6 +421,10 @@ let g:cpp_no_function_highlight = 1
 
 "auto pairs 配置括号成对编辑
 let g:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"'}
+
+
+"ctrlp 搜索文件
+let g:ctrlp_map = '<C-p>'
 "-----------------o-------------------End-------------------o------------------
 
 
