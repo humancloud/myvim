@@ -30,4 +30,4 @@
 
 ## 截图
 
-![](https://gitee.com/humanclouds/myvim/blob/master/img/1.png)
+![](https://gitee.com/humanclouds/myvim/raw/master/img/1.png)
