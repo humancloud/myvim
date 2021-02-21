@@ -1,148 +1,107 @@
-"============================================================================
-"			导入vimrc要做的事情
-"         1. 安装python-pynvim和nvim和jedi : pip install pynvim  pip install jedi pacman -S nvim
-"         2. taglist插件还需要安装ctags  : pacman -S ctags
-"         3. astyle 和 clang
-"         4. font: Hack    size: small size is good
-"         5. 如果出现问题,可以将plugged目录赋予较高权限
-"============================================================================
+"---------------o----------------vim 非插件配置---------------o---------------
+syntax on           " 开启语法高亮
+set showcmd		    " 状态栏显示未写完的命令
+set showmatch		" 显示匹配的括号
+set smartcase		" 智能大小写匹配
+set incsearch		" 渐进式查找
+set mouse=a		    " 所有模式下启用鼠标
+set ruler			" 右下角显示光标的坐标
+set cursorline		" 突出显示当前行
+set smartindent		" 设置智能自动缩进
+set nu 				" 行号
+set hlsearch        " 高亮搜索
+set ignorecase		" 搜索忽略大小写
+set tabstop=4		" 设置tab键大小
+set shiftwidth=4	" 设置缩进长度
 
-" All system-wide defaults are set in $VIMRUNTIME/debian.vim and sourced by
-" the call to :runtime you can find below.  If you wish to change any of those
-" settings, you should do it in this file (/etc/vim/vimrc), since debian.vim
-" will be overwritten everytime an upgrade of the vim packages is performed.
-" It is recommended to make changes after sourcing debian.vim since it alters
-" the value of the 'compatible' option.
-
-" This line should not be removed as it ensures that various options are
-" properly set to work with the Vim-related packages available in Debian.
-runtime! debian.vim
-
-" Vim will load $VIMRUNTIME/defaults.vim if the user does not have a vimrc.
-" This happens after /etc/vim/vimrc(.local) are loaded, so it will override
-" any settings in these files.
-" If you don't want that to happen, uncomment the below line to prevent
-" defaults.vim from being loaded.
-" let g:skip_defaults_vim = 1
-
-" Uncomment the next line to make Vim more Vi-compatible
-" NOTE: debian.vim sets 'nocompatible'.  Setting 'compatible' changes numerous
-" options, so any other options should be set AFTER setting 'compatible'.
-"set compatible
-
-" Vim5 and later versions support syntax highlighting. Uncommenting the next
-" line enables syntax highlighting by default.
-if has("syntax")
-  syntax on
+" 设置vim 打开后光标停在上次退出时光标的位置
+" vim默认使用~/.viminfo保存和记录每个用户的运行记录，
+" 如在vim内执行的历史命令、每个曾编辑过的文件上次退出时光标位置等，
+" 这些信息能让我们快速地回到上次退出vim前的状态。
+if has("autocmd")
+	au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
-
-" If using a dark background within the editing area and syntax highlighting
-" turn on this option as well
-"set background=dark
-
-" Uncomment the following to have Vim jump to the last position when
-" reopening a file
-"if has("autocmd")
-"  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-"endif
-
-" Uncomment the following to have Vim load indentation rules and plugins
-" according to the detected filetype.
-"if has("autocmd")
-"  filetype plugin indent on
-"endif
-
-
-" Source a global configuration file if available
-if filereadable("/etc/vim/vimrc.local")
-  source /etc/vim/vimrc.local
-endif
-
 
 "设置leader键
 let g:mapleader=","
+
+"切换窗口
+nnoremap <C-h> <C-w>h
+nnoremap <C-l> <C-w>l
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+
+"leader w 保存文件
+inoremap ,w <esc>:w<CR>
+
+"插入模式下向下开辟新一行
+inoremap <C-j> <C-o>o
+"插入模式下向上开辟新一行
+inoremap <C-k> <C-o>O
+
+"还有插件里的一些映射
+"例如NerdTree的映射,air-line的切换buffer映射，非常方便
+"好几个插件的自带配置中的映射，我修改成了合适的，比较喜欢nnoremap
+"还删除了一些插件自带的不必要的配置，文件已经比较精简
+"-----------------o-------------------End-------------------o------------------
 
 
 "------------------o----------------vimplug-----------------o-----------------
 "所有插件都在 ~/.vim/plugged
 call plug#begin('~/.vim/plugged')
+
 "vim-startify
 Plug 'mhinz/vim-startify'
-
-
-""""""""""""""""""""""""""""""""""""""""""""
-"         代码补全                         "
-"         ctrl n ctrl p 上下选择           "
-""""""""""""""""""""""""""""""""""""""""""""
 "coc
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" 安装插件后配置json,安装languageserver, C系列安装clang,Python系列:
-" pip install language-server ,Go安装gopls
-
+" 安装后执行 :CocConfig 修改JSON文件，决定开启哪些语言
+" C/C++语言补全，安装clang即可
+" Python补全，pip install language-server 
+" Go补全，安装gopols即可，安装vim-go,自动就装好了
 
 "vim-go
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+" 设置代理(安装需要外网，所以为Golang设置国内代理)后直接安装或更新插件或者执行:GoInstallBinaries，然后vim-go需要的gopols,golint等就安装好了
 
-
-"neoformat
-"输入Neoformat即可格式化
+"Neoformat
+" :Neoformat 格式化
 Plug 'sbdchd/neoformat'
 
-"cpp什么高亮插件,也不知道咋样,从vimawsome找的,喜欢的人很多
+"Cpp语法高亮插件
 Plug 'octol/vim-cpp-enhanced-highlight'
 
-"TagBar 显示大纲
+"TagBar
 Plug 'preservim/tagbar'
 
-"airline
+"Airline
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
-"输入NERDTree就可以打开目录树
+"NerdTree
 Plug 'scrooloose/nerdtree'
 
-
-Plug 'tpope/vim-surround'
-"vim-surround成对编辑和删除功能比下面更强大,但下面输入括号更舒服方便
-"2.1 命令行模式
-"ds                删除一个配对符号 (delete a surrounding)     
-"     example:   (hello) 在光标上按ds,然后输入(就删除了括号,"hello"一样
-"cs                更改一个配对符号 (change a surrounding)
-"	  example:   (hello) 要改成"hello", 光标在hello输入cs,然后输入(,输入"即可
-" 增加符号不常用
-" Hello world! 现在将光标放在“Hello”上，按ysiw],变成 [Hello] world, 然后按cs]{  变成{Hello} world, 
-"
-" { Hello } world 现在，用yssb或将整个行用括号括起来yss), ( {Hello} world )  要恢复为原始文本：按ds{ ds)
-"
-
-"括号成对编辑
+"AutoPairs 自动补全另一个括号或引号
 Plug 'jiangmiao/auto-pairs'
 
-
-"按gc注释 gcgc取消注释
+"gc注释 gcgc取消注释
 Plug 'tpope/vim-commentary'
-"代码缩进线适合python
+
+"Indentline 代码缩进线
 Plug 'yggdroot/indentline'
 
-" 显示修改,gitgutter
+"配合git显示文件的修改
 Plug 'airblade/vim-gitgutter'
 
-" 模糊搜索文件
+"模糊搜索文件
 Plug 'kien/ctrlp.vim'
 
-
 "配色插件
-Plug 'zefei/cake16'
 Plug 'w0ng/vim-hybrid'
 Plug 'morhetz/gruvbox'
 Plug 'tomasr/molokai'
-"有dark和light,都不错
+"space_vim_theme light 和 dark 都不错
 Plug 'liuchengxu/space-vim-theme'  
-"大名鼎鼎的solarized8
 Plug 'lifepillar/vim-solarized8'
-"seoul256
-Plug 'junegunn/seoul256.vim'
-"yowish
 Plug 'KabbAmine/yowish.vim'
 
 "leader k高亮单词,
@@ -150,31 +109,24 @@ Plug 'KabbAmine/yowish.vim'
 "n N 到下一个高亮的单词
 Plug 'lfv89/vim-interestingwords'
 
-"vim Markdown
+"Vim Markdown
 Plug 'iamcco/markdown-preview.vim'
-"添加数学公式支持
+"Markdown 添加数学公式支持
 Plug 'iamcco/mathjax-support-for-mkdp'
 
-"bufferonly
-"输入:BufOnly 即可清除其他buffer
+"Bufferonly
+":BufOnly 即可清除其他buffer,只保留当前buffer
 Plug 'vim-scripts/BufOnly.vim'
-
 
 call plug#end()
 "-----------------o-------------------End-------------------o-----------------
 
 
-
-
 "------------o-----------all plugins configuration-------------o---------------
 
-" vim-go need gopls
-let g:go_def_mode = 'gopls'
-
-
-"coc补全
-"这个很好用,但是我想还是觉得原生vim更好,而且每次启动都要启动language server (所以在配置里去掉了C/Cpp的配置,使用:CocConfig可以修改配置)
-"功能很强大，还需要继续挖掘
+"coc补全配置
+" 暂时在配置里去掉了C/Cpp的配置,使用:CocConfig可以修改配置
+" 功能很强大，还需要继续挖掘
 "
 "TextEdit might fail if hidden is not set.
 set hidden
@@ -330,16 +282,12 @@ nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
-
-"Neoformat C 配置,
-"由于安装了clang,所以它默认会使用clang-format来格式化C代码,但是真的很难用,所以这里指定一下
-"格式化C: pacman install astyle ,格式化其他应该也需要其他的相应软件包
+"Neoformat C 配置
+" 格式化C/C++: pacman install astyle 
 let g:neoformat_enabled_c = ['astyle']
 let g:neoformat_enabled_cpp = ['astyle']
-let g:neoformat_enabled_python = ['yapf']
 
-
-"airline配置
+"Airline配置
 let g:airline#extensions#tabline#enabled = 1 		  "设置一直显示上方的tabline
 let g:airline_powerline_fonts = 1   		          "这个是安装字体后 必须设置此项" 
 let g:airline#extensions#tabline#buffer_nr_show = 1   "设置显示buffer的编号"
@@ -359,56 +307,33 @@ nnoremap [b :bp<CR>
 "映射快速关闭当前buffer
 nnoremap <leader>b :bd<CR>
 "设置主题
-let g:airline_theme="wombat" 
-"主题
-" badwolf 和dark差不多 
-" base16 银，紫 
-" behelit 浅蓝
-" bubblegum 暗绿，粉。          (我的推荐)
-" dark 亮黄
-" durant 比dark暗些
-" hybrid 灰
-" hybridline 绿，棕
-" jellybeans 黑灰
-" kalisi 暗黄，绿
-" kolor 蓝色的
-" laederon 银，红
-" light 浅亮蓝，红，银
-" lucius 灰，银
-" luna 蓝绿色
-" molokai 棕，蓝，橙
-" monochrome
-" murmur 蓝，橙
-" papercolor 银，浅蓝
-" powerlineish 暗黄，橙
-" raven 灰
-" serene 黑
-" silver 太银了，深绿
-" simple 亮蓝
-" sol 银，深蓝
-" solarized 太多色了
-" term 绿，蓝
+let g:airline_theme="zenburn" 
+"主题(挑选后较美观的)
 " tomorrow 
-" ubaryd
-" understated
-" wombat 亮黄
-" zenburn 蓝，橙
-
+" wombat
+" base16 
+" behelit
+" bubblegum 
+" dark 
+" hybrid
+" murmur 
+" simple 
+" solarized 配合solarized主题
+" zenburn   配合space_vim主题 
 
 "NerdTree
 " 映射打开目录树,关闭目录树
 nnoremap <leader>n :NERDTreeToggle<CR> 
-" 更新目录树，(创建新文件后不会自动更新目录树)
+" 重新读取目录更新目录树
 nnoremap <leader>r :NERDTree<CR>
-"定位当前打开的文件在目录树中的位置
+" 定位当前打开的文件在目录树中的位置
 nnoremap <leader>v :NERDTreeFind<CR>
 
-
-"TagBar configuration
+"TagBar configuration (need Ctags)
 nnoremap <leader>t :TagbarToggle<CR>
 
-
-"cpp enhanced highlight配置(高亮显示Cpp的类等)
+"Cpp enhanced highlight配置
+"vim 自带的语法高亮没有Cpp的部分关键字和标准库
 let g:cpp_class_scope_highlight = 1
 let g:cpp_member_variable_highlight = 1
 let g:cpp_class_decl_highlight = 1
@@ -418,122 +343,22 @@ let g:cpp_experimental_template_highlight = 1
 let g:cpp_concepts_highlight = 1
 let g:cpp_no_function_highlight = 1
 
-
-"auto pairs 配置括号成对编辑
+"Auto pairs 配置输入一个自动补全另一个括号或引号
 let g:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"'}
 
-
-"ctrlp 搜索文件
+"Ctrlp 搜索文件
 let g:ctrlp_map = '<C-p>'
 "-----------------o-------------------End-------------------o------------------
 
-
 "---------------o----------------vim配色与主题---------------o----------------
+let g:solarized_termcolors=256 "设置256配色
+set termguicolors              "设置真彩色
+set background=dark            "背景为暗色
 
-"设置256配色，这个要放在colorscheme前面
-let g:solarized_termcolors=256
-set termguicolors  "设置真彩色
-set background=dark "背景为暗色
-
-colorscheme hybrid
+"colorscheme hybrid
 "colorscheme gruvbox 
-"colorscheme space_vim_theme
-
-"solarized配置
+colorscheme space_vim_theme
 "colorscheme solarized8
-
-" colorscheme molokai
-" let g:molokai_original = 1
-" let g:rehash256 = 1
-
-"seoul256主题
-"colorscheme seoul256
-
-"yowish
+"colorscheme molokai
 "colorscheme yowish
-
-"onedark
-"colorscheme onedark
 "-----------------o-------------------End-------------------o------------------
-
-
-
-
-"---------------o----------------vim自带功能配置---------------o---------------
-"显示未敲完的命令
-set showcmd		    " Show (partial) command in status line.
-set showmatch		" Show matching brackets.
-set smartcase		" Do smart case matching
-set incsearch		" Incremental search
-set autowrite		" Automatically save before commands like :next and :make
-set mouse=a		    " Enable mouse usage (all modes)
-set ruler			" 右下角显示光标的坐标
-set cursorline		" 突出显示当前行
-set smartindent		" 设置智能自动缩进
-set nu 				" 行号
-set hlsearch        " 高亮搜索
-set ignorecase		" 搜索忽略大小写
-set tabstop=4		" 设置tab键大小
-set shiftwidth=4	" 设置缩进长度
-
-"vim 打开后光标停在上次退出时光标的位置
-if has("autocmd")
-	au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-endif
-"-----------------o-------------------End-------------------o------------------
-
-
-
-
-"---------------o----------------vim中的一些映射---------------o---------------
-"
-"noremap是不会递归的映射 (大概是no recursion)
-"例如
-"noremap Y y
-"noremap y Y
-"不会出现问题,按Y代表y,按y代表Y
-"而
-"map Y y
-"map y k
-"按Y时就是k
-"
-"
-"前缀代表生效范围
-"inoremap就只在插入(insert)模式下生效
-"vnoremap只在visual模式下生效
-"nnoremap就在normal模式下生效
-"
-"
-"好几个插件的自带配置的映射，我修改成了合适的，比较喜欢nnoremap
-
-
-
-
-
-"Nomal Mode
-
-"1. switch window
-nnoremap <C-h> <C-w>h
-nnoremap <C-l> <C-w>l
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-
-
-
-
-
-" Insert Mode
-
-"插入模式下leader w 保存文件
-inoremap ,w <esc>:w<CR>
-
-"插入模式下任意位置直接切到新的一行
-inoremap <C-j> <C-o>o
-
-"插入模式跳转到行尾
-inoremap <C-l> <C-o>A  
-
-
-"还有插件里的一些映射
-"例如NerdTree的映射,air-line的切换buffer映射，非常方便
-""-----------------o-------------------End-------------------o------------------
