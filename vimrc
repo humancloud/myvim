@@ -13,11 +13,11 @@ set hlsearch        " 高亮搜索
 set ignorecase		" 搜索忽略大小写
 set tabstop=4		" 设置tab键大小
 set shiftwidth=4	" 设置缩进长度
+set encoding=UTF-8
 
 " 设置vim 打开后光标停在上次退出时光标的位置
 " vim默认使用~/.viminfo保存和记录每个用户的运行记录，
 " 如在vim内执行的历史命令、每个曾编辑过的文件上次退出时光标位置等，
-" 这些信息能让我们快速地回到上次退出vim前的状态。
 if has("autocmd")
 	au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
@@ -88,9 +88,6 @@ Plug 'tpope/vim-commentary'
 
 "Indentline 代码缩进线
 Plug 'yggdroot/indentline'
-
-"配合git显示文件的修改
-Plug 'airblade/vim-gitgutter'
 
 "模糊搜索文件
 Plug 'kien/ctrlp.vim'
@@ -290,17 +287,6 @@ let g:neoformat_enabled_cpp = ['astyle']
 "Airline配置
 let g:airline#extensions#tabline#enabled = 1 		  "设置一直显示上方的tabline
 let g:airline_powerline_fonts = 1   		          "这个是安装字体后 必须设置此项" 
-let g:airline#extensions#tabline#buffer_nr_show = 1   "设置显示buffer的编号"
-" 映射<leader>num到num buffer,快速切换buffer
-nnoremap <leader>1 :b 1<CR>
-nnoremap <leader>2 :b 2<CR>
-nnoremap <leader>3 :b 3<CR>
-nnoremap <leader>4 :b 4<CR>
-nnoremap <leader>5 :b 5<CR>
-nnoremap <leader>6 :b 6<CR>
-nnoremap <leader>7 :b 7<CR>
-nnoremap <leader>8 :b 8<CR>
-nnoremap <leader>9 :b 9<CR>
 "映射左右切换buffer
 nnoremap ]b :bn<CR>
 nnoremap [b :bp<CR>
@@ -328,6 +314,7 @@ nnoremap <leader>n :NERDTreeToggle<CR>
 nnoremap <leader>r :NERDTree<CR>
 " 定位当前打开的文件在目录树中的位置
 nnoremap <leader>v :NERDTreeFind<CR>
+let g:NERDTreeWinSize=20
 
 "TagBar configuration (need Ctags)
 nnoremap <leader>t :TagbarToggle<CR>
