@@ -25,6 +25,9 @@ endif
 "设置leader键
 let g:mapleader=","
 
+" Coc Warning vim版本最好大于8.1
+let g:coc_disable_startup_warning = 1
+
 "切换窗口
 nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
@@ -55,7 +58,7 @@ Plug 'mhinz/vim-startify'
 "coc
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " 安装后执行 :CocConfig 修改JSON文件，决定开启哪些语言
-" C/C++语言补全，安装clang即可
+" C/C++语言补全，安装clangd即可
 " Python补全，pip install language-server 
 " Go补全，安装gopols即可，安装vim-go,自动就装好了
 
@@ -106,11 +109,6 @@ Plug 'KabbAmine/yowish.vim'
 "n N 到下一个高亮的单词
 Plug 'lfv89/vim-interestingwords'
 
-"Vim Markdown
-Plug 'iamcco/markdown-preview.vim'
-"Markdown 添加数学公式支持
-Plug 'iamcco/mathjax-support-for-mkdp'
-
 "Bufferonly
 ":BufOnly 即可清除其他buffer,只保留当前buffer
 Plug 'vim-scripts/BufOnly.vim'
@@ -122,8 +120,7 @@ call plug#end()
 "------------o-----------all plugins configuration-------------o---------------
 
 "coc补全配置
-" 暂时在配置里去掉了C/Cpp的配置,使用:CocConfig可以修改配置
-" 功能很强大，还需要继续挖掘
+" :CocConfig修改配置
 "
 "TextEdit might fail if hidden is not set.
 set hidden
@@ -281,8 +278,8 @@ nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
 "Neoformat C 配置
 " 格式化C/C++: pacman install astyle 
-let g:neoformat_enabled_c = ['astyle']
-let g:neoformat_enabled_cpp = ['astyle']
+"let g:neoformat_enabled_c = ['astyle']
+"let g:neoformat_enabled_cpp = ['astyle']
 
 "Airline配置
 let g:airline#extensions#tabline#enabled = 1 		  "设置一直显示上方的tabline
@@ -343,8 +340,8 @@ set termguicolors              "设置真彩色
 set background=dark            "背景为暗色
 
 "colorscheme hybrid
-"colorscheme gruvbox 
-colorscheme space_vim_theme
+colorscheme gruvbox 
+"colorscheme space_vim_theme
 "colorscheme solarized8
 "colorscheme molokai
 "colorscheme yowish

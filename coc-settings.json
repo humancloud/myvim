@@ -1,11 +1,6 @@
 {
+	"diagnostic.enableSign": false,   // 关闭语法检查
   "languageserver": {
-	//下面是c/c++配置,暂时注释起来
-    "clangd": {
-      "command": "clangd",
-      "rootPatterns": ["compile_flags.txt", "compile_commands.json"],
-      "filetypes": ["c", "cc", "cpp", "c++", "objc", "objcpp"]
-    },
     "golang": {
       "command": "gopls",
       "rootPatterns": ["go.mod"],
